@@ -9,6 +9,13 @@ function detectSite() {
   return null;
 }
 
+function formatCO2(grams) {
+  if (grams === 0) return "0µg";
+  if (grams < 0.0001) return (grams * 1e6).toFixed(1) + "µg";
+  if (grams < 0.1) return (grams * 1000).toFixed(3) + "mg";
+  return grams.toFixed(4) + "g";
+}
+
 // Get the textarea element depending on site
 function getTextarea() {
   const site = detectSite();
@@ -93,18 +100,18 @@ function showCard(data, textarea, originalText, onAccept, onSkip) {
       <div class="sp-metric">
         <div class="sp-metric-label">Original</div>
         <div class="sp-metric-value">${c.original.token_count} tokens</div>
-        <div class="sp-metric-sub">${originalCO2.toFixed(4)}g CO₂</div>
+        <div class="sp-metric-sub">${formatCO2(originalCO2)} CO₂</div>
       </div>
       <div class="sp-arrow">→</div>
       <div class="sp-metric sp-metric-green">
         <div class="sp-metric-label">Rewritten</div>
         <div class="sp-metric-value">${c.rewritten.token_count} tokens</div>
-        <div class="sp-metric-sub">${c.rewritten.co2_grams.toFixed(4)}g CO₂</div>
+        <div class="sp-metric-sub">${formatCO2(c.rewritten.co2_grams)} CO₂</div>
       </div>
       <div class="sp-metric sp-metric-save">
         <div class="sp-metric-label">Saved</div>
         <div class="sp-metric-value sp-save-pct">${savedPct}%</div>
-        <div class="sp-metric-sub">${savedCO2.toFixed(4)}g CO₂</div>
+        <div class="sp-metric-sub">${formatCO2(savedCO2)} CO₂</div>
       </div>
     </div>
     <div class="sp-rewrite-box">
